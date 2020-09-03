@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    <li class="nav-item px-3">
+        <a class="navbar-brand"  href="{% url 'project_view' issue.project.pk %}" >To Project</a>
+    </li>
+    <li class="nav-item px-3">
+        <a class="navbar-brand"  href="{% url 'project_view' issue.project.pk %}" >Отмена</a>
+    </li>
+{% endblock %}
+
+{% block title %}Update Issue{% endblock %}
+
+{% block content %}
+
+    <h3 class=" col-md-6 pt-4"><b>Update issue:</b></h3>
+    {% url "issue_update_view" issue.pk as action_url %}
+    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Update' %}
+
+{% endblock %}

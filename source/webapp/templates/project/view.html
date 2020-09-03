@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects: {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-lg-12 mt-3">
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+        </div>
+    </div>
+    <form action="{% url 'multi_delete'%}" method="POST">
+    {% csrf_token %}
+        <div class="row">
+            <div class="col col-lg-6"><h1 class="pt-4"><b>Проекты: </b></h1></div>
+            <div class="col col-lg-6 pt-4 mt-2 type_battot_delete_all">
+                <input class="btn btn-danger" type="submit" value="Удалить выбранные проекты">
+            </div>
+        </div>
+    {% for project in projects_list %}
+        <hr>
+        <div class="row">
+            <div class="col col-lg-2">
+                <label>
+                    <input class="ml-4" type="checkbox" name="id" value="{{ project.pk }}">
+                </label>
+            </div>
+            <div class="col col-lg-6">
+                <h3><a href="{% url 'project_view' project.pk %}">№{{ project.pk }}. Project: <b>{{ project.name }}</b></a> </h3>
+                    <p><b>Name:</b> {{ project.name }} </p>
+                    <p><b>Start date: </b> {{ project.starts_date }} | <b> Finish date: </b> {{ project.finish_date }}</p>
+                <a href="{% url 'project_view' project.pk %}"><h4 class="text-warning">Issues amount: {{ project.issue.count }}</h4></a>
+            </div>
+            <div class="coL col-lg-1 mt-5">
+                <a href="{% url 'project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
+            </div>
+            <div class="coL col-lg-1 mt-5">
+                <a href="{% url 'project_delete' project.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
+
+    </form>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+{% endblock %}

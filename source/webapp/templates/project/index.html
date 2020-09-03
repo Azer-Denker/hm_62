@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}View project{% endblock %}
+
+{% block menu %}
+    <li class="nav-item px-3">
+        <a class="navbar-brand" href="{% url 'issue_add_view' project.pk %}">Добавить задачу</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col col-lg-10 text-center">
+        <h1 class="pt-5"><b>Project: №{{ project.pk }}.
+            <a href="{% url 'project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
+            <a href="{% url 'project_delete' project.pk %}" ><button type="button"  class="btn btn-danger">Delete. </button></a>
+        </b></h1>
+        <h3> Name: <b class="text-primary"> {{ project.name }}</b></h3>
+        <div class="box">
+            <p >Description: </p>
+            {{ project.description | linebreaks }}
+        </div>
+        <p><b>Start date: </b> {{ project.starts_date }} | <b> Finish date: </b> {{ project.finish_date }}</p>
+    </div>
+</div>
+<div class="col col-lg-12 ">
+    <h3>Issues:</h3>
+    <div class="row">
+        <div class="col col-lg-12">
+            {% if is_paginated %}
+                {% include 'partial/pagination.html' %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="col col-lg-12">
+    {% for issue in issues %}
+    <div class="row">
+        <div class="col col-lg-6">
+            <h3>№{{ issue.pk }}. Status: <b>{{ issue.status.get_status_display }}</b></h3>
+            <h3>Тип задачи: {% for type in issue.type.all %}<b class="text-primary">{{ type.get_name_display }}</b>{% if not forloop.last%}, {% endif %}{% endfor %}</h3>
+                <p>Summary: {{ issue.summary }} </p>
+                <p>Create time: {{ issue.completion_time }}</p>
+                <p>Update_at: {{ issue.update_at }}</p>
+        </div>
+        <div class="coL col-lg-1 mt-5">
+            <a href="{% url 'issue_update_view' issue.pk %}" ><button type="submit"  class="btn btn-success">Update</button></a>
+        </div>
+        <div class="coL col-lg-1 mt-5">
+            <a href="{% url 'issue_delete_view' issue.pk %}" ><button type="submit"  class="btn btn-danger">Delete</button></a>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="col col-lg-12">
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

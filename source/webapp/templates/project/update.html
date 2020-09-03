@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    <li class="nav-item px-3">
+        <a class="navbar-brand"  href="{% url 'project_view' project.pk %}" >Отмена</a>
+    </li>
+{% endblock %}
+
+{% block title %}Project Update{% endblock %}
+
+{% block content %}
+    <h3 class=" col-md-6 pt-4"><b>Update Project:</b></h3>
+    {% include 'partial/form.html' with  form_method='post' %}
+{% endblock %}

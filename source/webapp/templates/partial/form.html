@@ -1,14 +1,12 @@
 <form action="{{ action_url }}" method="{{ form_method }}">
-    {% csrf_token %}
-
-    {% for error in form.non_field_errors %}
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
         <p class="error">{{ error }}</p>
-    {% endfor %}
-
-    {% for field in form %}
-        {% include 'partial/form_field.html' %}
-    {% endfor %}
-
-    <br/>
-    <input type="submit" value="{{ button_text|default:"Submit" }}"/>
+        {% endfor %}
+        {% for field in form %}
+            {% include 'partial/form_field.html' %}
+        {% endfor %}
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-primary mb-2">{{ button_text | default:'Submit' }}</button>
+    </div>
 </form>

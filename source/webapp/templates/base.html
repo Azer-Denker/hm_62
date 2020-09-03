@@ -8,7 +8,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}My Site{% endblock %}</title>
 
-    <!-- XDSoft DateTimePicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -18,24 +17,26 @@
     <nav class="navbar">
         <div class="container">
             <ul class="menu">
-                <li><a href="{% url "index" %}">Home</a></li>
-                <li><a href="{% url "product_create" %}">Add Product</a></li>
-                <li><a href="{% url "cart_view" %}">Cart</a></li>
+                <li><a href="{% url 'index_project' %}">На главную</a></li>
+                <li><a href="{% url 'index_issue' %}">Задачи</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'project_create_view' %}">Создать Проект</a></li>
                 {% block menu %}{% endblock %}
-            </ul>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
 
             {% block search %}
-                {% if search_form %}
-                    <div class="search-form">
-                        <form action="{% url 'index' %}" method="GET">
-                            {{ search_form.search }}
-                            <input type="submit" value="Найти">
-                        </form>
-                    </div>
-                {% endif %}
+                <div class="search-form">
+                    <form action="{% url 'index_issue' %}" method="GET">
+                        {{ search_form.search }}
+                        <input type="submit" value="Найти">
+                    </form>
+                </div>
             {% endblock %}
         </div>
-    </nav>
+   </nav>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
