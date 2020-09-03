@@ -16,9 +16,11 @@
     {% csrf_token %}
         <div class="row">
             <div class="col col-lg-6 "><h1><b>Задачи: </b></h1></div>
+            {% if request.user.is_authenticated %}
             <div class="col col-lg-6 pt-2 pb-2 type_battot_delete_all">
                 <input class="btn btn-danger" type="submit" value="Удалить выбранные задачи">
             </div>
+            {% endif %}
         </div>
     {% for issue in issue_list %}
         <div class="row">
@@ -34,12 +36,14 @@
                     <p>Create time: {{ issue.completion_time }}</p>
                     <p>Update_at: {{ issue.update_at }}</p>
             </div>
+        {% if request.user.is_authenticated %}
             <div class="coL col-lg-1 mt-5">
                 <a href="{% url 'issue_update_view' issue.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             </div>
             <div class="coL col-lg-1 mt-5">
                 <a href="{% url 'issue_delete_view' issue.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
             </div>
+        {% endif %}
         </div>
     {% endfor %}
     </form>

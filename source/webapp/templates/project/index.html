@@ -12,8 +12,10 @@
 <div class="row">
     <div class="col col-lg-10 text-center">
         <h1 class="pt-5"><b>Project: №{{ project.pk }}.
+            {% if request.user.is_authenticated %}
             <a href="{% url 'project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             <a href="{% url 'project_delete' project.pk %}" ><button type="button"  class="btn btn-danger">Delete. </button></a>
+            {% endif %}
         </b></h1>
         <h3> Name: <b class="text-primary"> {{ project.name }}</b></h3>
         <div class="box">
@@ -43,12 +45,14 @@
                 <p>Create time: {{ issue.completion_time }}</p>
                 <p>Update_at: {{ issue.update_at }}</p>
         </div>
+    {% if request.user.is_authenticated %}
         <div class="coL col-lg-1 mt-5">
             <a href="{% url 'issue_update_view' issue.pk %}" ><button type="submit"  class="btn btn-success">Update</button></a>
         </div>
         <div class="coL col-lg-1 mt-5">
             <a href="{% url 'issue_delete_view' issue.pk %}" ><button type="submit"  class="btn btn-danger">Delete</button></a>
         </div>
+    {% endif %}
     </div>
     {% endfor %}
     <div class="col col-lg-12">

@@ -12,8 +12,10 @@
 <div class="row">
     <div class="col col-lg-12 text-center">
         <h1 class="pt-4"><b>Issue: №{{ issuetracker.pk }}.
+            {% if request.user.is_authenticated %}
             <a href="{% url 'issue_update_view' issuetracker.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             <a href="{% url 'issue_delete_view' issuetracker.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
+            {% endif %}
         </b></h1>
         <h3> Status: <b class="text-primary">{{ issuetracker.status.get_status_display }}</b></h3>
         <p>Тип задачи: {% for type in issuetracker.type.all %}<b class="text-primary">{{ type.get_name_display }}</b>
