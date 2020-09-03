@@ -1,29 +1,24 @@
 from django.contrib import admin
-from .models import Product, Cart, Order, OrderProduct
+from .models import Issue, Status, Type, Project
 
 
-class ProductAdmin(admin.ModelAdmin):
-    list_filter = ('category',)
-    list_display = ('pk', 'name', 'amount', 'price')
+class IssueAdmin(admin.ModelAdmin):
+    filter_horizontal = ('type',)
+    list_filter = ('status',)
+    list_display = ('pk', 'summary',)
+    list_display_links = ('pk', 'summary')
+    search_fields = ('type',)
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'is_deleted', 'name',)
     list_display_links = ('pk', 'name')
     search_fields = ('name',)
 
 
-# Бонус
-class OrderProductAdmin(admin.TabularInline):
-    model = OrderProduct
-    fields = ('product', 'qty')
-    extra = 0
+admin.site.register(Issue, IssueAdmin)
+admin.site.register(Status)
+admin.site.register(Type)
+admin.site.register(Project, ProjectAdmin)
 
 
-# Бонус
-class OrderAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'phone', 'created_at')
-    list_display_links = ('pk', 'name')
-    ordering = ('-created_at',)
-    inlines = (OrderProductAdmin,)
-
-
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Cart)
-admin.site.register(Order, OrderAdmin)

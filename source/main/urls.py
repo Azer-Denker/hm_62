@@ -1,4 +1,4 @@
-"""hello URL Configuration
+"""main URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -15,21 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webapp.views import IndexView, ProductView, ProductCreateView, \
-    ProductUpdateView, ProductDeleteView, CartView, CartAddView, \
-    CartDeleteView, CartDeleteOneView, OrderCreateView
+from webapp.views import *
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view(), name='index'),
-    path('product/<int:pk>/', ProductView.as_view(), name='product_view'),
-    path('products/add/', ProductCreateView.as_view(), name='product_create'),
-    path('product/<int:pk>/update/', ProductUpdateView.as_view(), name='product_update'),
-    path('product/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
 
-    path('cart/', CartView.as_view(), name='cart_view'),
-    path('product/<int:pk>/add-to-cart/', CartAddView.as_view(), name='product_add_to_cart'),
-    path('cart/<int:pk>/delete/', CartDeleteView.as_view(), name='cart_delete'),
-    path('cart/<int:pk>/delete-one/', CartDeleteOneView.as_view(), name='cart_delete_one'),
-    path('order/create/', OrderCreateView.as_view(), name='order_create'),
+    path('', ProjectsView.as_view(), name='index_project'),
+    path('project/<int:pk>/update', ProjectUpdateView.as_view(), name='project_update'),
+    path('project/<int:pk>/', ProjectView.as_view(), name='project_view'),
+    path('project/add/', ProjectCreateView.as_view(), name='project_create_view'),
+    path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project_delete'),
+
+    path('issues/', IssuesView.as_view(), name='index_issue'),
+    path('project/<int:pk>/issue/add/', IssueCreateView.as_view(), name='issue_add_view'),
+    path('project/<int:pk>/issue/', IssueView.as_view(), name='issue_view'),
+    path('project/<int:pk>/issue/delete/', IssueDeleteView.as_view(), name='issue_delete_view'),
+    path('project/<int:pk>/issue/update/', IssueUpdateView.as_view(), name='issue_update_view'),
+
+    path('multi_delete/', multi_delete, name='multi_delete'),
+    path('multi_delete_issue/', multi_delete_issue, name='multi_delete_issue'),
+
+    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout')
 ]

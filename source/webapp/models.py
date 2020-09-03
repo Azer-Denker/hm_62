@@ -1,103 +1,61 @@
 from django.db import models
-from django.core.validators import MinValueValidator
-from django.db.models import Sum, F, ExpressionWrapper as E
+
+from webapp.validate import title, null
+
+STATUS_CHOICES = [('New', 'Новая'), ('In_progress', 'В процессе'),  ('Done', 'Сделано')]
+Type_CHOICES = [('Issue', 'Задача'), ('Bug', 'Ошибка'),  ('Enhancement', 'Улучшение')]
 
 
-DEFAULT_CATEGORY = 'other'
-CATEGORY_CHOICES = (
-    (DEFAULT_CATEGORY, 'Разное'),
-    ('food', 'Продукты питания'),
-    ('household', 'Хоз. товары'),
-    ('toys', 'Детские игрушки'),
-    ('appliances', 'Бытовая Техника')
-)
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Название')
-    description = models.TextField(max_length=2000, null=True, blank=True, verbose_name='Описание')
-    category = models.CharField(max_length=20, verbose_name='Категория',
-                                choices=CATEGORY_CHOICES, default=DEFAULT_CATEGORY)
-    amount = models.IntegerField(verbose_name='Остаток', validators=[MinValueValidator(0)])
-    price = models.DecimalField(verbose_name='Цена', max_digits=7, decimal_places=2, validators=[MinValueValidator(0)])
+class Project(models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False, default='None', verbose_name='Название')
+    description = models.TextField(max_length=300, null=False, blank=False, default="None", verbose_name='Описание')
+    starts_date = models.DateField(null=False, blank=False, verbose_name='дата начала')
+    finish_date = models.DateField(null=True, blank=True, verbose_name='дата окончания')
+    is_deleted = models.BooleanField(null=False, default=False)
 
     def __str__(self):
-        return f'{self.name} - {self.amount}'
+        return "{}. {}".format(self.pk, self.name)
 
     class Meta:
-        verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name = 'Проект'
+        verbose_name_plural = 'Проекты'
 
 
-class Cart(models.Model):
-    product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE,
-                                verbose_name='Товар', related_name='in_cart')
-    qty = models.IntegerField(verbose_name='Количество', default=1, validators=[MinValueValidator(1)])
+class Issue(models.Model):
+    project = models.ForeignKey('webapp.Project', related_name='issue', on_delete=models.PROTECT, verbose_name='Проект')
+    summary = models.CharField(max_length=300, null=False, blank=False, default="None", verbose_name='Задание',
+                               validators=[title, ])
+    description = models.TextField(max_length=3500, null=True, blank=True, default="None description",
+                                   verbose_name='Описание', validators=[null, ])
+    status = models.ForeignKey('webapp.Status', related_name='issue', on_delete=models.PROTECT, verbose_name='Статус')
+    type = models.ManyToManyField('webapp.Type', related_name='type', verbose_name='Тип')
+    completion_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    update_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+
+    class Meta:
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачи'
+
+
+class Status(models.Model):
+    status = models.CharField(max_length=300, null=False, blank=False, choices=STATUS_CHOICES, default='New',
+                              verbose_name='Статус')
 
     def __str__(self):
-        return f'{self.product.name} - {self.qty}'
-
-    # def get_total(self):
-    #     return self.qty * self.product.price
-
-    @classmethod
-    def get_with_total(cls):
-        # запрос, так быстрее
-        total_output_field = models.DecimalField(max_digits=10, decimal_places=2)
-        total_expr = E(F('qty') * F('product__price'), output_field=total_output_field)
-        return cls.objects.annotate(total=total_expr)
-
-    @classmethod
-    def get_with_product(cls):
-        return cls.get_with_total().select_related('product')
-
-    # @classmethod
-    # def get_cart_total(cls):
-    #     total = 0
-    #     for item in cls.objects.all():
-    #         total += item.get_total()
-    #     return total
-
-    @classmethod
-    def get_cart_total(cls):
-        # запрос, так быстрее
-        total = cls.get_with_total().aggregate(cart_total=Sum('total'))
-        return total['cart_total']
+        return self.status
 
     class Meta:
-        verbose_name = 'Товар в корзине'
-        verbose_name_plural = 'Товары в корзине'
+        verbose_name = 'Статус'
+        verbose_name_plural = 'Статусы'
 
 
-class Order(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Имя')
-    phone = models.CharField(max_length=30, verbose_name='Телефон')
-    address = models.CharField(max_length=100, verbose_name='Адрес')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
-    products = models.ManyToManyField('webapp.Product', related_name='orders', verbose_name='Товары',
-                                      through='webapp.OrderProduct', through_fields=['order', 'product'])
+class Type(models.Model):
+    name = models.CharField(max_length=300, null=False, blank=False, choices=Type_CHOICES, default='Issue',
+                            verbose_name='Тип')
 
     def __str__(self):
-        return f'{self.name} - {self.phone} - {self.format_time()}'
-
-    def format_time(self):
-        return self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        return self.name
 
     class Meta:
-        verbose_name = 'Заказ'
-        verbose_name_plural = 'Заказы'
-
-
-class OrderProduct(models.Model):
-    product = models.ForeignKey('webapp.Product', on_delete=models.CASCADE,
-                                verbose_name='Товар', related_name='order_products')
-    order = models.ForeignKey('webapp.Order', on_delete=models.CASCADE,
-                              verbose_name='Заказ', related_name='order_products')
-    qty = models.IntegerField(verbose_name='Количество')
-
-    def __str__(self):
-        return f'{self.product.name} - {self.order.name} - {self.order.format_time()}'
-
-    class Meta:
-        verbose_name = 'Товар в заказе'
-        verbose_name_plural = 'Товары в заказе'
+        verbose_name = 'Тип'
+        verbose_name_plural = 'Типы'
