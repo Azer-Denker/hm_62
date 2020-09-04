@@ -22,6 +22,7 @@
                 {% if request.user.is_authenticated %}
                     <li><a href="{% url 'project_create_view' %}">Создать Проект</a></li>
                 {% block menu %}{% endblock %}
+                    <li><a href="#">Привет, {{ request.user.get_full_name|default:request.user.username }}</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
