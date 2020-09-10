@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, \
+    UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -66,7 +68,7 @@ class ProjectView(DetailView):
             return issues, None, False
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = 'project/create.html'
     form_class = ProjectForm
@@ -75,10 +77,11 @@ class ProjectCreateView(CreateView):
         return reverse('project_view', kwargs={'pk': self.object.pk})
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(PermissionRequiredMixin, UpdateView):
     model = Project
     template_name = 'project/update.html'
     form_class = ProjectForm
+    permission_required = 'webapp.change_project'
 
     def get_queryset(self):
         data = self.model.objects.filter(is_deleted=False)
@@ -88,7 +91,7 @@ class ProjectUpdateView(UpdateView):
         return reverse('project_view', kwargs={'pk': self.object.pk})
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(UserPassesTestMixin, DeleteView):
     model = Project
     template_name = 'project/delete.html'
     success_url = reverse_lazy('index_project')
@@ -100,3 +103,7 @@ class ProjectDeleteView(DeleteView):
         project.is_deleted = True
         project.save()
         return HttpResponseRedirect(success_url)
+
+    def test_func(self):
+        return self.request.user.has_perm('webapp.delete_article') or \
+               self.get_object().author == self.request.user

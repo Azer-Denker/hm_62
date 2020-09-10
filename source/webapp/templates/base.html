@@ -19,7 +19,7 @@
             <ul class="menu">
                 <li><a href="{% url 'index_project' %}">На главную</a></li>
                 <li><a href="{% url 'index_issue' %}">Задачи</a></li>
-                {% if request.user.is_authenticated %}
+                {% if perms.webapp.add_project %}
                     <li><a href="{% url 'project_create_view' %}">Создать Проект</a></li>
                 {% block menu %}{% endblock %}
                 {% endif %}

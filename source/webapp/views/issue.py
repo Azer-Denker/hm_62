@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, \
+    UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -30,13 +32,17 @@ class IssueView(DetailView):
     model = Issue
 
 
-class IssueDeleteView(DeleteView):
+class IssueDeleteView(UserPassesTestMixin, DeleteView):
     model = Issue
     template_name = 'issue/delete.html'
     context_object_name = 'issue'
 
     def get_success_url(self):
         return reverse("project_view", kwargs={'pk': self.object.project.pk})
+
+    def test_func(self):
+        return self.request.user.has_perm('webapp.delete_article') or \
+               self.get_object().author == self.request.user
 
 
 def multi_delete_issue(request):
@@ -45,7 +51,7 @@ def multi_delete_issue(request):
     return redirect('index')
 
 
-class IssueCreateView(CreateView):
+class IssueCreateView(LoginRequiredMixin, CreateView):
     model = Issue
     template_name = 'issue/create.html'
     form_class = IssueForm
@@ -70,11 +76,12 @@ class IssueCreateView(CreateView):
         return context
 
 
-class IssueUpdateView(UpdateView):
+class IssueUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'issue/update.html'
     form_class = IssueForm
     model = Issue
     context_object_name = 'issue'
+    permission_required = 'webapp.change_issue'
 
     def get_success_url(self):
         return reverse('issue_view', kwargs={'pk': self.object.pk})
