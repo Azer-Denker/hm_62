@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth import get_user_model
 from webapp.validate import title, null
 
 STATUS_CHOICES = [('New', 'Новая'), ('In_progress', 'В процессе'),  ('Done', 'Сделано')]
@@ -8,6 +8,7 @@ Type_CHOICES = [('Issue', 'Задача'), ('Bug', 'Ошибка'),  ('Enhanceme
 
 class Project(models.Model):
     name = models.CharField(max_length=50, null=False, blank=False, default='None', verbose_name='Название')
+    team = models.ManyToManyField(get_user_model(), related_name='project', verbose_name='Команда')
     description = models.TextField(max_length=300, null=False, blank=False, default="None", verbose_name='Описание')
     starts_date = models.DateField(null=False, blank=False, verbose_name='дата начала')
     finish_date = models.DateField(null=True, blank=True, verbose_name='дата окончания')
@@ -19,10 +20,14 @@ class Project(models.Model):
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
+        permissions = [
+            ('add_user_in_project', 'Добавить пользователя в проект')
+        ]
 
 
 class Issue(models.Model):
     project = models.ForeignKey('webapp.Project', related_name='issue', on_delete=models.PROTECT, verbose_name='Проект')
+    team = models.ManyToManyField(get_user_model(), related_name='issue', verbose_name='Команда')
     summary = models.CharField(max_length=300, null=False, blank=False, default="None", verbose_name='Задание',
                                validators=[title, ])
     description = models.TextField(max_length=3500, null=True, blank=True, default="None description",

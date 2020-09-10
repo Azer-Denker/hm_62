@@ -127,3 +127,22 @@ LOGIN_REDIRECT_URL = 'index_project'
 LOGOUT_REDIRECT_URL = 'index_project'
 
 LOGIN_URL = 'accounts:login'
+
+
+# SMTP settings
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '445d89a4366454'
+EMAIL_HOST_PASSWORD = '656973300d923b'
+EMAIL_PORT = '2525'
+DEFAULT_FROM_EMAIL = 'admin@localhost'
+
+
+# HOST
+
+BASE_HOST = 'http://localhost:8000'
+
+
+# Email Activation
+
+ACTIVATE_USERS_EMAIL = False  # True

@@ -2,8 +2,11 @@
 
 {% block title %}Регистрация{% endblock %}
 
-{% block menu %}
-{#    бонус #}
+{% block auth_menu %}
+    {% with request.GET.next as next_url %}
+        <li><a href="{% url 'accounts:login' %}{% if next_url %}?next={{ next_url }}{% endif %}">Login</a></li>
+        <li><a href="{% url 'accounts:create' %}{% if next_url %}?next={{ next_url }}{% endif %}">Sign Up</a></li>
+    {% endwith %}
 {% endblock %}
 
 {% block content %}

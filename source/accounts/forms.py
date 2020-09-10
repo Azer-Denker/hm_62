@@ -1,24 +1,43 @@
 from django.contrib.auth.forms import UserCreationForm
-from django import forms
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
+from .models import AuthToken
+from django.conf import settings
 
 
 class MyUserCreationForm(UserCreationForm):
-
-    email = forms.EmailField(required=True)
-
-    def clean(self):
-        cleaned_data = super(MyUserCreationForm, self).clean()
-        first_name = cleaned_data.get('first_name')
-        last_name = cleaned_data.get('last_name')
-
-        if not(first_name or last_name):
-            raise ValidationError('Enter either first or last name!!!')
-
-        return cleaned_data
-
-    class Meta:
-        model = User
+    class Meta(UserCreationForm.Meta):
         fields = ['username', 'password1', 'password2',
                   'first_name', 'last_name', 'email']
+
+    def save(self, commit=True):
+        if settings.ACTIVATE_USERS_EMAIL:
+            user: AbstractUser = super().save(commit=False)
+            user.is_active = False
+            if commit:
+                user.save()
+                token = self.create_token(user)
+                self.send_email(user, token)
+        else:
+            user = super().save(commit=commit)
+        return user
+
+    def create_token(self, user):
+        return AuthToken.objects.create(user=user)
+
+    def send_email(self, user, token):
+        if user.email:
+            subject = 'Вы создали учётную запись на сайте "Мой Блог"'
+            link = settings.BASE_HOST + reverse('accounts:activate', kwargs={'token': token.token})
+            message = f'''Здравствуйте, {user.username}!
+Вы создали учётную запись на сайте "Мой Блог"
+Активируйте её, перейдя по ссылке {link}.
+Если вы считаете, что это ошибка, просто игнорируйте это письмо.'''
+            html_message = f'''Здравствуйте, {user.username}!
+Вы создали учётную запись на сайте "Мой Блог"
+Активируйте её, перейдя по ссылке <a href="{link}">{link}</a>.
+Если вы считаете, что это ошибка, просто игнорируйте это письмо.'''
+            try:
+                user.email_user(subject, message, html_message=html_message)
+            except Exception as e:
+                print(e)

@@ -14,7 +14,7 @@
     {% csrf_token %}
         <div class="row">
             <div class="col col-lg-6"><h1 class="pt-4"><b>Проекты: </b></h1></div>
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated or comment.author == request.user %}
             <div class="col col-lg-6 pt-4 mt-2 type_battot_delete_all">
                 <input class="btn btn-danger" type="submit" value="Удалить выбранные проекты">
             </div>
@@ -34,7 +34,7 @@
                     <p><b>Start date: </b> {{ project.starts_date }} | <b> Finish date: </b> {{ project.finish_date }}</p>
                 <a href="{% url 'project_view' project.pk %}"><h4 class="text-warning">Issues amount: {{ project.issue.count }}</h4></a>
             </div>
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated or comment.author == request.user %}
             <div class="coL col-lg-1 mt-5">
                 <a href="{% url 'project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             </div>
