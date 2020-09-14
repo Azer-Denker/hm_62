@@ -17,6 +17,9 @@
     <p>Фамилия: {{ user_obj.last_name }}</p>
     <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
     <p>Почта: {{ user_obj.email }}</p>
+    <p>Ссылуа на git: {{ user_obj.profile.git.url }}</p>
+    <p>О себе: {{ user_obj.profile.self.url }}</p>
+
 
     <h2 class="text-center clear">Статьи автора:</h2>
     {% include 'partial/article_list.html' %}
