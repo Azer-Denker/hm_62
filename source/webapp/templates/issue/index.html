@@ -12,7 +12,6 @@
         {% endif %}
         </div>
     </div>
-    <form action="{% url 'multi_delete_issue'%}" method="POST">
     {% csrf_token %}
         <div class="row">
             <div class="col col-lg-6 "><h1><b>Задачи: </b></h1></div>
@@ -30,7 +29,7 @@
                 </label>
             </div>
             <div class="col col-lg-6">
-                <h3><a href="{% url 'issue_view' issue.pk %}">№{{ issue.pk }}. Status: <b>{{ issue.status.get_status_display }}</b></a> </h3>
+                <h3><a href="{% url 'webapp:issue_view' issue.pk %}">№{{ issue.pk }}. Status: <b>{{ issue.status.get_status_display }}</b></a> </h3>
                 <h3>Тип задачи: {% for type in issue.type.all %}<b class="text-primary">{{ type.get_name_display }}</b>{% if not forloop.last%}, {% endif %}{% endfor %}</h3>
                     <p>Summary: {{ issue.summary }} </p>
                     <p>Create time: {{ issue.completion_time }}</p>
@@ -38,12 +37,12 @@
             </div>
         {% if perms.webapp.change_project %}
             <div class="coL col-lg-1 mt-5">
-                <a href="{% url 'issue_update_view' issue.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
+                <a href="{% url 'webapp:issue_update_view' issue.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             </div>
         {% endif %}
         {% if perms.webapp.delete_project %}
             <div class="coL col-lg-1 mt-5">
-                <a href="{% url 'issue_delete_view' issue.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
+                <a href="{% url 'webapp:issue_delete_view' issue.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
             </div>
         {% endif %}
         </div>

@@ -38,17 +38,11 @@ class IssueDeleteView(UserPassesTestMixin, DeleteView):
     context_object_name = 'issue'
 
     def get_success_url(self):
-        return reverse("project_view", kwargs={'pk': self.object.project.pk})
+        return reverse("webapp:project_view", kwargs={'pk': self.object.project.pk})
 
     def test_func(self):
         return self.request.user.has_perm('webapp.delete_article') or \
                self.get_object().author == self.request.user
-
-
-def multi_delete_issue(request):
-    data = request.POST.getlist('id')
-    Issue.objects.filter(pk__in=data).delete()
-    return redirect('index')
 
 
 class IssueCreateView(LoginRequiredMixin, CreateView):
@@ -65,7 +59,7 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
         issue.project = project
         issue.save()
         form.save_m2m()
-        return redirect('project_view', pk=project.pk)
+        return redirect('webapp:project_view', pk=project.pk)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -84,4 +78,4 @@ class IssueUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = 'webapp.change_issue'
 
     def get_success_url(self):
-        return reverse('issue_view', kwargs={'pk': self.object.pk})
+        return reverse('webapp:issue_view', kwargs={'pk': self.object.pk})

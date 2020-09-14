@@ -10,7 +10,6 @@
     {% endif %}
         </div>
     </div>
-    <form action="{% url 'multi_delete'%}" method="POST">
     {% csrf_token %}
         <div class="row">
             <div class="col col-lg-6"><h1 class="pt-4"><b>Проекты: </b></h1></div>
@@ -30,22 +29,22 @@
             </div>
             <div class="col col-lg-6">
                 {% if perms.webapp.view_project %}
-                <h3><a href="{% url 'project_view' project.pk %}">№{{ project.pk }}. Project: <b>{{ project.name }}</b></a></h3>
+                <h3><a href="{% url 'webapp:project_view' project.pk %}">№{{ project.pk }}. Project: <b>{{ project.name }}</b></a></h3>
                 {% endif %}
                     <p><b>Name:</b> {{ project.name }} </p>
                     <p><b>Start date: </b> {{ project.starts_date }} | <b> Finish date: </b> {{ project.finish_date }}</p>
                 {% if perms.webapp.view_project %}
-                <a href="{% url 'project_view' project.pk %}"><h4 class="text-warning">Issues amount: {{ project.issue.count }}</h4></a>
+                <a href="{% url 'webapp:project_view' project.pk %}"><h4 class="text-warning">Issues amount: {{ project.issue.count }}</h4></a>
                 {% endif %}
             </div>
         {% if perms.webapp.change_project %}
             <div class="coL col-lg-1 mt-5">
-                <a href="{% url 'project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
+                <a href="{% url 'webapp:project_update' project.pk %}" ><button type="button"  class="btn btn-success">Update</button></a>
             </div>
         {% endif %}
         {% if perms.webapp.delete_project %}
             <div class="coL col-lg-1 mt-5">
-                <a href="{% url 'project_delete' project.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
+                <a href="{% url 'webapp:project_delete' project.pk %}" ><button type="button"  class="btn btn-danger">Delete</button></a>
             </div>
         {% endif %}
         </div>

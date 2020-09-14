@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from .models import AuthToken
+from .models import AuthToken, Profile
 from django.conf import settings
 
 
@@ -20,6 +20,7 @@ class MyUserCreationForm(UserCreationForm):
                 self.send_email(user, token)
         else:
             user = super().save(commit=commit)
+            Profile.objects.create(user=user)
         return user
 
     def create_token(self, user):

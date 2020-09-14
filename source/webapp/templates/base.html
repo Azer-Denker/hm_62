@@ -17,15 +17,15 @@
     <nav class="navbar">
         <div class="container">
             <ul class="menu">
-                <li><a href="{% url 'index_project' %}">На главную</a></li>
-                <li><a href="{% url 'index_issue' %}">Задачи</a></li>
+                <li><a href="{% url 'webapp:index_project' %}">На главную</a></li>
+                <li><a href="{% url 'webapp:index_issue' %}">Задачи</a></li>
                 {% if perms.webapp.add_project %}
-                    <li><a href="{% url 'project_create_view' %}">Создать Проект</a></li>
+                    <li><a href="{% url 'webapp:project_create_view' %}">Создать Проект</a></li>
                 {% block menu %}{% endblock %}
                 {% endif %}
                 {% block auth_menu %}
                     {% if request.user.is_authenticated %}
-                        <li><a href="#">Привет, {{ request.user.get_full_name|default:request.user.username }}</a></li>
+                        <li><a href="{% url 'accounts:detail' request.user.pk %}">Привет, {{ request.user.get_full_name|default:request.user.username }}</a></li>
                         <li><a href="{% url 'accounts:logout' %}?next={{ request.get_full_path }}">Logout</a></li>
                     {% else %}
                         <li><a href="{% url 'accounts:login' %}?next={{ request.get_full_path }}">Login</a></li>
@@ -35,7 +35,7 @@
             </ul>
             {% block search %}
                 <div class="search-form">
-                    <form action="{% url 'index_issue' %}" method="GET">
+                    <form action="{% url 'webapp:index_issue' %}" method="GET">
                         {{ search_form.search }}
                         <input type="submit" value="Найти">
                     </form>

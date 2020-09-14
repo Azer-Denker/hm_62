@@ -7,11 +7,6 @@ body {
     margin-top: 60px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
 .container {
     margin: 0 auto;
     width: 100%;
@@ -53,10 +48,6 @@ table {
 .menu a:hover {
     color: #ffc122;
     text-decoration: underline;
-}
-
-.pre {
-    white-space: pre;
 }
 
 .error {
@@ -164,12 +155,19 @@ input[type='submit']:hover {
     cursor: pointer;
 }
 
-.cart-table th,
-.cart-table td {
-    border: solid 1px gray;
-    padding: 5px 10px;
+.avatar {
+    display: inline-block;
+    float: left;
+    width: 250px;
+    height: auto;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
-.text-right {
-    text-align: right;
+.text-center {
+    text-align: center;
+}
+
+.clear {
+    clear: both;
 }

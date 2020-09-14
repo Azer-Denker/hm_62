@@ -42,9 +42,13 @@
     "name": "qweqew",
     "description": "qweqwrr",
     "starts_date": "2020-09-01",
-    "finish_date": "2020-09-10",
+    "finish_date": "2020-02-10",
     "is_deleted": false,
-    "team": []
+    "team": [
+      3,
+      4,
+      5
+    ]
   }
 },
 {
@@ -56,6 +60,22 @@
     "starts_date": "2020-09-14",
     "finish_date": null,
     "is_deleted": false,
+    "team": [
+      3,
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "webapp.project",
+  "pk": 8,
+  "fields": {
+    "name": "None",
+    "description": "None",
+    "starts_date": "2020-01-01",
+    "finish_date": null,
+    "is_deleted": true,
     "team": []
   }
 },
@@ -66,12 +86,11 @@
     "project": 4,
     "summary": "Awewr",
     "description": "dgsdvszvsd",
-    "status": 1,
+    "status": 2,
     "completion_at": "2020-09-03T11:14:39.667Z",
-    "update_at": "2020-09-03T11:16:50.815Z",
+    "update_at": "2020-09-10T09:43:58.322Z",
     "team": [],
     "type": [
-      1,
       3
     ]
   }
@@ -126,22 +145,6 @@
 },
 {
   "model": "webapp.issue",
-  "pk": 6,
-  "fields": {
-    "project": 6,
-    "summary": "YYcbwkbsh",
-    "description": "hdbksdfjdhsf",
-    "status": 3,
-    "completion_at": "2020-09-03T11:19:05.603Z",
-    "update_at": "2020-09-03T11:19:05.603Z",
-    "team": [],
-    "type": [
-      2
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
   "pk": 7,
   "fields": {
     "project": 5,
@@ -167,6 +170,22 @@
     "status": 2,
     "completion_at": "2020-09-03T11:28:15.667Z",
     "update_at": "2020-09-03T11:28:15.667Z",
+    "team": [],
+    "type": [
+      1
+    ]
+  }
+},
+{
+  "model": "webapp.issue",
+  "pk": 9,
+  "fields": {
+    "project": 6,
+    "summary": "None",
+    "description": "None description",
+    "status": 1,
+    "completion_at": "2020-09-10T09:47:30.647Z",
+    "update_at": "2020-09-10T09:47:30.647Z",
     "team": [],
     "type": [
       1

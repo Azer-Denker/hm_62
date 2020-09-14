@@ -123,8 +123,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = 'index_project'
-LOGOUT_REDIRECT_URL = 'index_project'
+LOGIN_REDIRECT_URL = 'webapp.index_project'
+LOGOUT_REDIRECT_URL = 'webapp.index_project'
 
 LOGIN_URL = 'accounts:login'
 
@@ -146,3 +146,7 @@ BASE_HOST = 'http://localhost:8000'
 # Email Activation
 
 ACTIVATE_USERS_EMAIL = False  # True
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/media/'

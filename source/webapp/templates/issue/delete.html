@@ -8,16 +8,16 @@
             <h3>Задача:</h3> {{ issue.summary }}. <h3>Время создания задачи:</h3> {{ issue.completion_time }}.
     </div>
     <div class="row">
-        <form method="POST" action="{% url "issue_delete_view" issue.pk %}" class="text-center">
+        <form method="POST" action="{% url "webapp:issue_delete_view" issue.pk %}" class="text-center">
             {% csrf_token %}
         <div class="coL col-lg-3 ml-5 mt-1">
-            <a href="{% url 'issue_delete_view' issue.project.pk %}" >
+            <a href="{% url 'webapp:issue_delete_view' issue.project.pk %}" >
                 <button type="submit"  class="btn btn-danger">Delete</button>
             </a>
         </div>
         </form>
         <div class="coL col-lg-3  mt-1">
-            <a href="{% url 'project_view' issue.project.pk  %}" >
+            <a href="{% url 'webapp:project_view' issue.project.pk  %}" >
                 <button type="submit"  class="btn btn-primary">Отмена</button>
             </a>
         </div>

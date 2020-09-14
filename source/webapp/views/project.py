@@ -5,19 +5,49 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
 from webapp.forms import SimpleSearchForm, ProjectForm
 from webapp.models import Project
 
 
-def multi_delete(request):
-    data = request.POST.getlist('id')
-    projects = Project.objects.filter(pk__in=data)
-    for project in projects:
-        project.is_deleted = True
-        project.save()
-    return redirect('projects')
+class ProjectMassActionView(PermissionRequiredMixin, View):
+    redirect_url = 'webapp:index_project'
+    permission_required = 'webapp.delete_article'
+    queryset = None  # изначально queryset = None
+
+    def has_permission(self):
+        if super().has_permission():
+            return True  # админы и модеры могут удалять
+        articles = self.get_queryset()
+        author_ids = articles.values('author_id')
+        for item in author_ids:
+            if item['author_id'] != self.request.user.pk:
+                return False  # остальные могут удалять, только если среди выбранных статей
+        return True           # нет чужих статей
+
+    # метод 'post' проверяет наличие ключа 'delete' в запросе,
+    # и тогда удаляет
+    def post(self, request, *args, **kwargs):
+        if 'delete' in self.request.POST:
+            return self.delete(request, *args, **kwargs)
+        return redirect(self.redirect_url)
+
+    # метод 'delete' не проверяет наличие ключа 'delete' в запросе,
+    # и все равно удаляет
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        queryset.delete()
+        return redirect(self.redirect_url)
+
+    # "кэширующий" метод.
+    # при первом доступе к свойству queryset находит и сохраняет его в self.queryset
+    # при повторном доступе не ищет, возвращает сохранённое значение.
+    def get_queryset(self):
+        if self.queryset is None:
+            ids = self.request.POST.getlist('selected_projects', [])
+            self.queryset = self.get_queryset().filter(id__in=ids)
+        return self.queryset
 
 
 class ProjectsView(ListView):
@@ -74,7 +104,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     form_class = ProjectForm
 
     def get_success_url(self):
-        return reverse('project_view', kwargs={'pk': self.object.pk})
+        return reverse('webapp:project_view', kwargs={'pk': self.object.pk})
 
 
 class ProjectUpdateView(PermissionRequiredMixin, UpdateView):
@@ -88,13 +118,13 @@ class ProjectUpdateView(PermissionRequiredMixin, UpdateView):
         return data
 
     def get_success_url(self):
-        return reverse('project_view', kwargs={'pk': self.object.pk})
+        return reverse('webapp:project_view', kwargs={'pk': self.object.pk})
 
 
 class ProjectDeleteView(UserPassesTestMixin, DeleteView):
     model = Project
     template_name = 'project/delete.html'
-    success_url = reverse_lazy('index_project')
+    success_url = reverse_lazy('webapp:index_project')
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
