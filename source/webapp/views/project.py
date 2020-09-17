@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
-from webapp.forms import SimpleSearchForm, ProjectForm
+from webapp.forms import SimpleSearchForm, ProjectForm, UserForm
 from webapp.models import Project
 
 
@@ -19,8 +19,8 @@ class ProjectMassActionView(PermissionRequiredMixin, View):
     def has_permission(self):
         if super().has_permission():
             return True  # админы и модеры могут удалять
-        articles = self.get_queryset()
-        author_ids = articles.values('author_id')
+        projects = self.get_queryset()
+        author_ids = projects.values('author_id')
         for item in author_ids:
             if item['author_id'] != self.request.user.pk:
                 return False  # остальные могут удалять, только если среди выбранных статей
@@ -137,3 +137,13 @@ class ProjectDeleteView(UserPassesTestMixin, DeleteView):
     def test_func(self):
         return self.request.user.has_perm('webapp.delete_article') or \
                self.get_object().author == self.request.user
+
+
+class UserAddView(PermissionRequiredMixin, UpdateView):
+    model = Project
+    template_name = 'partial/user_add.html'
+    form_class = UserForm
+    permission_required = 'webapp.add_user_in_project'
+
+    def get_success_url(self):
+        return reverse('webapp:project_view', kwargs={'pk': self.object.pk})

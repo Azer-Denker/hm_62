@@ -3,8 +3,10 @@
 {% block title %}Пользователь{% endblock %}
 
 {% block menu %}
-    <li><a href="#">Редактировать</a></li>
-    <li><a href="#">Смена пароля</a></li>
+    {% if request.user == user_obj %}
+        <li><a href="{% url 'accounts:change' user_obj.pk %}">Редактировать</a></li>
+        <li><a href="{% url "accounts:password_change" %}">Смена пароля</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -17,9 +19,8 @@
     <p>Фамилия: {{ user_obj.last_name }}</p>
     <p>Дата рождения: {{ user_obj.profile.birth_date|date:'d.m.Y' }}</p>
     <p>Почта: {{ user_obj.email }}</p>
-    <p>Ссылуа на git: {{ user_obj.profile.git.url }}</p>
-    <p>О себе: {{ user_obj.profile.self.url }}</p>
-
+    <p>Ссылуа на git: <a href="{{ user_obj.profile.git }}">{{ user_obj.profile.git }}</a></p>
+    <p>О себе: {{ user_obj.profile.self }}</p>
 
     <h2 class="text-center clear">Статьи автора:</h2>
     {% include 'partial/article_list.html' %}

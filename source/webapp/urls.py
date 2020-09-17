@@ -13,6 +13,7 @@ urlpatterns = [
             path('delete/', ProjectDeleteView.as_view(), name='project_delete'),
             path('issue/add/', IssueCreateView.as_view(),
                  name='issue_add_view'),
+            path('useradd/', UserAddView.as_view(), name='add_user_in_project'),
         ])),
 
         path('add/', ProjectCreateView.as_view(), name='project_create_view'),
@@ -27,4 +28,5 @@ urlpatterns = [
             path('delete/', IssueDeleteView.as_view(), name='issue_delete_view'),
         ]))
     ]))
+
 ]

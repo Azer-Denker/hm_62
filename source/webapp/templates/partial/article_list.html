@@ -7,27 +7,27 @@
         {% csrf_token %}
         <p class="mass-actions"><input type="submit" name="delete" value="Delete selected"></p>
 {% endif %}
-        {% for article in articles %}
+        {% for project in projects %}
             <div class="box">
-                <h3><a href="{% url "webapp:project_view" article.pk %}">{{ article.title }}</a></h3>
+                <h3><a href="{% url "webapp:project_view" project.pk %}">{{ project.title }}</a></h3>
                 {% if show_mass_delete %}
                     <p>
-                        <label for="selected_articles-{{ article.pk }}">Select:</label>
+                        <label for="selected_articles-{{ project.pk }}">Select:</label>
                         <input type="checkbox" name="selected_articles"
-                               id="selected_articles-{{ article.pk }}" value="{{ article.pk }}">
+                               id="selected_articles-{{ project.pk }}" value="{{ project.pk }}">
                     </p>
                 {% endif %}
-                <p>Статус: ({{ article.status }} | {{ article.get_status_display }})</p>
+                <p>Статус: ({{ project.status }} | {{ project.get_status_display }})</p>
                 <p>
-                    <a href="{% url 'accounts:detail' article.author_id %}">{{ article.author }}</a>
-                    | {{ article.created_at|date:"d.m.Y H:i:s" }}
+                    <a href="{% url 'accounts:detail' project.team_id %}">{{ project.author }}</a>
+                    | {{ project.created_at|date:"d.m.Y H:i:s" }}
                 </p>
-                <p>Published at: {{ article.publish_at|date:"d.m.Y H:i:s" }}</p>
-                {% if perms.webapp.change_article or article.author == request.user %}
-                    <p><a href="{% url 'webapp:project_update' article.pk %}">Update</a></p>
+                <p>Published at: {{ project.publish_at|date:"d.m.Y H:i:s" }}</p>
+                {% if perms.webapp.change_article or project.author == request.user %}
+                    <p><a href="{% url 'webapp:project_update' project.pk %}">Update</a></p>
                 {% endif %}
-                {% if perms.webapp.delete_article or article.author == request.user %}
-                    <p><a href="{% url 'webapp:project_delete' article.pk %}">Delete</a></p>
+                {% if perms.webapp.delete_article or project.author == request.user %}
+                    <p><a href="{% url 'webapp:project_delete' project.pk %}">Delete</a></p>
                 {% endif %}
             </div>
         {% empty %}

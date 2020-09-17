@@ -6,6 +6,9 @@
     <li class="nav-item px-3">
         <a class="navbar-brand" href="{% url 'webapp:issue_add_view' project.pk %}">Добавить задачу</a>
     </li>
+    {% if perms.webapp.add_user_in_project %}
+    <li><a href="{% url 'webapp:add_user_in_project' project.pk %}">Добавить пользователя</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
