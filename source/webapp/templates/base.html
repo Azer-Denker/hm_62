@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}My Site{% endblock %}</title>
 
+    <!-- XDSoft DateTimePicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -17,12 +18,15 @@
     <nav class="navbar">
         <div class="container">
             <ul class="menu">
-                <li><a href="{% url 'webapp:index_project' %}">На главную</a></li>
-                <li><a href="{% url 'webapp:index_issue' %}">Задачи</a></li>
-                {% if perms.webapp.add_project %}
-                    <li><a href="{% url 'webapp:project_create_view' %}">Создать Проект</a></li>
-                {% block menu %}{% endblock %}
-                     <li><a href="{% url 'accounts:detail' request.user.pk %}">
+                <li><a href="{% url "webapp:index" %}">Home</a></li>
+                <li><a href="{% url "webapp:cart_view" %}">Cart</a></li>
+                {% if request.user.is_authenticated %}
+                    {% if perms.webapp.add_product %}
+                        <li><a href="{% url "webapp:product_create" %}">Add Product</a></li>
+                    {% endif %}
+                    <li><a href="{% url "webapp:watch_orders" %}">Orders</a></li>
+                    {% block menu %}{% endblock %}
+                    <li><a href="{% url 'accounts:detail' request.user.pk %}">
                         Привет, {{ request.user.get_full_name|default:request.user.username }}
                     </a></li>
                 {% endif %}
@@ -38,17 +42,21 @@
                     <li><a href="{% url 'accounts:password_reset_email' %}">Reset Password</a></li>
                 {% endif %}
             </ul>
+
             {% block search %}
-                <div class="search-form">
-                    <form action="{% url 'webapp:index_issue' %}" method="GET">
-                        {{ search_form.search }}
-                        <input type="submit" value="Найти">
-                    </form>
-                </div>
+                {% if search_form %}
+                    <div class="search-form">
+                        <form action="{% url 'webapp:index' %}" method="GET">
+                            {{ search_form.search }}
+                            <input type="submit" value="Найти">
+                        </form>
+                    </div>
+                {% endif %}
             {% endblock %}
         </div>
-   </nav>
+    </nav>
     <div class="container">
+        {% include 'partial/messages.html' %}
         {% block content %}{% endblock %}
     </div>
 

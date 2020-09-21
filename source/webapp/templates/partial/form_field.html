@@ -1,15 +1,19 @@
 {% load widget_tweaks %}
-<div class="form-group row mb-1">
-    <label class="col-2 " for="{{field.id_for_label }}">
-        {% if field.field.required %}<span class="red">*</span>
-        {% endif %}{{ field.label }}</label>
-    <div class="col-lg-6">
-    {{ field  }}<br/>
-    {% if field.errors %}
-        {% for error in field.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    {% endif %}
-    </div>
-</div>
 
+<label for="{{ field.id_for_label }}">
+    {% if field.field.required %}
+        <span class="red">*</span>
+    {% endif %}
+    {{ field.label }}:
+</label>
+<br/>
+{% if field|field_type == 'modelmultiplechoicefield' %}
+    {{ field|add_class:'form-checkboxes'|add_error_class:'form-error' }}
+{% else %}
+    {{ field|add_class:'form-input'|add_error_class:'form-error' }}
+{% endif %}
+<br/>
+{% for error in field.errors %}
+    <p class="error">{{ error }}</p>
+{% endfor %}
+<br/>

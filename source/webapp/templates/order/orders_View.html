@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Ваши заказы{% endblock %}
+{% block content %}
+{% for order in orders %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Количество</th>
+            </tr>
+        </thead>
+    <tbody>
+    {% for item in order.order_products.all %}
+
+                <tr>
+                    <td class="text-right">{{ item.product.name }}</td>
+                    <td>{{ item.qty }}</td>
+                </tr>
+
+{#            <tr>#}
+{#                <th colspan="3" class="text-right">Итого</th>#}
+{#                <th class="text-right">{{ cart_total }}</th>#}
+{#            </tr>#}
+
+
+    {% endfor %}
+    </tbody>
+    </table>
+    <br><br>
+{% endfor %}
+
+{#    <h3>Оформить заказ:</h3>#}
+{#    {% url 'webapp:order_create' as action_url %}#}
+{#    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Оформить заказ' %}#}
+{% endblock %}

@@ -21,7 +21,4 @@
     <p>Почта: {{ user_obj.email }}</p>
     <p>Ссылуа на git: <a href="{{ user_obj.profile.git }}">{{ user_obj.profile.git }}</a></p>
     <p>О себе: {{ user_obj.profile.self }}</p>
-
-    <h2 class="text-center clear">Статьи автора:</h2>
-    {% include 'partial/article_list.html' %}
 {% endblock %}

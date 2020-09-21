@@ -1,2 +1,2 @@
-from .project import *
-from .issue import *
+from .product_views import *
+from .order_views import *

@@ -1,237 +1,95 @@
 [
 {
-  "model": "webapp.project",
-  "pk": 3,
-  "fields": {
-    "name": "qwe",
-    "description": "qwe",
-    "starts_date": "2020-09-02",
-    "finish_date": null,
-    "is_deleted": false,
-    "team": []
-  }
-},
-{
-  "model": "webapp.project",
-  "pk": 4,
-  "fields": {
-    "name": "qweqwe",
-    "description": "qweqwe",
-    "starts_date": "2020-09-03",
-    "finish_date": null,
-    "is_deleted": false,
-    "team": []
-  }
-},
-{
-  "model": "webapp.project",
-  "pk": 5,
-  "fields": {
-    "name": "weqq",
-    "description": "weweq",
-    "starts_date": "2020-09-03",
-    "finish_date": "2020-09-03",
-    "is_deleted": false,
-    "team": []
-  }
-},
-{
-  "model": "webapp.project",
-  "pk": 6,
-  "fields": {
-    "name": "qweqew",
-    "description": "qweqwrr",
-    "starts_date": "2020-09-01",
-    "finish_date": "2020-02-10",
-    "is_deleted": false,
-    "team": [
-      3,
-      4,
-      5
-    ]
-  }
-},
-{
-  "model": "webapp.project",
-  "pk": 7,
-  "fields": {
-    "name": "ADdwwdf",
-    "description": "FAS",
-    "starts_date": "2020-09-14",
-    "finish_date": null,
-    "is_deleted": false,
-    "team": [
-      3,
-      4,
-      5
-    ]
-  }
-},
-{
-  "model": "webapp.project",
-  "pk": 8,
-  "fields": {
-    "name": "None",
-    "description": "None",
-    "starts_date": "2020-01-01",
-    "finish_date": null,
-    "is_deleted": true,
-    "team": []
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 2,
-  "fields": {
-    "project": 4,
-    "summary": "Awewr",
-    "description": "dgsdvszvsd",
-    "status": 2,
-    "completion_at": "2020-09-03T11:14:39.667Z",
-    "update_at": "2020-09-10T09:43:58.322Z",
-    "team": [],
-    "type": [
-      3
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 3,
-  "fields": {
-    "project": 4,
-    "summary": "Z\\Azgsrg",
-    "description": "hsrzhrhz",
-    "status": 2,
-    "completion_at": "2020-09-03T11:17:14.912Z",
-    "update_at": "2020-09-03T11:17:14.912Z",
-    "team": [],
-    "type": [
-      3
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 4,
-  "fields": {
-    "project": 6,
-    "summary": "Awfefe",
-    "description": "UGiywbfhwbudyhw",
-    "status": 2,
-    "completion_at": "2020-09-03T11:18:22.673Z",
-    "update_at": "2020-09-03T11:18:22.673Z",
-    "team": [],
-    "type": [
-      3
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 5,
-  "fields": {
-    "project": 3,
-    "summary": "OWNFOU",
-    "description": "eafnfkjbf",
-    "status": 3,
-    "completion_at": "2020-09-03T11:18:38.022Z",
-    "update_at": "2020-09-03T11:18:38.023Z",
-    "team": [],
-    "type": [
-      3
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 7,
-  "fields": {
-    "project": 5,
-    "summary": "Ankajsbkajhbd",
-    "description": "askdnlasdnajkf",
-    "status": 2,
-    "completion_at": "2020-09-03T11:19:47.696Z",
-    "update_at": "2020-09-03T11:19:47.696Z",
-    "team": [],
-    "type": [
-      1,
-      2
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 8,
-  "fields": {
-    "project": 6,
-    "summary": "None",
-    "description": "None description",
-    "status": 2,
-    "completion_at": "2020-09-03T11:28:15.667Z",
-    "update_at": "2020-09-03T11:28:15.667Z",
-    "team": [],
-    "type": [
-      1
-    ]
-  }
-},
-{
-  "model": "webapp.issue",
-  "pk": 9,
-  "fields": {
-    "project": 6,
-    "summary": "None",
-    "description": "None description",
-    "status": 1,
-    "completion_at": "2020-09-10T09:47:30.647Z",
-    "update_at": "2020-09-10T09:47:30.647Z",
-    "team": [],
-    "type": [
-      1
-    ]
-  }
-},
-{
-  "model": "webapp.status",
+  "model": "webapp.product",
   "pk": 1,
   "fields": {
-    "status": "New"
+    "name": "\u041a\u0443\u0440\u0438\u0446\u0430",
+    "description": "\u0425\u043e\u0440\u043e\u0448\u0430\u044f",
+    "category": "food",
+    "amount": 2,
+    "price": "125.00"
   }
 },
 {
-  "model": "webapp.status",
+  "model": "webapp.product",
   "pk": 2,
   "fields": {
-    "status": "In_progress"
+    "name": "\u0447\u0442\u043e-\u0442\u043e",
+    "description": "\u0447\u0442\u043e-\u0442\u043e",
+    "category": "household",
+    "amount": 4,
+    "price": "214.00"
   }
 },
 {
-  "model": "webapp.status",
+  "model": "webapp.product",
   "pk": 3,
   "fields": {
-    "status": "Done"
+    "name": "\u0447\u0442\u043e-\u0442\u043e",
+    "description": "\u0447\u0442\u043e-\u0442\u043e",
+    "category": "toys",
+    "amount": 23,
+    "price": "12234.00"
   }
 },
 {
-  "model": "webapp.type",
+  "model": "webapp.product",
+  "pk": 4,
+  "fields": {
+    "name": "\u0447\u0442\u043e-\u0442\u043e",
+    "description": "\u0447\u0442\u043e-\u0442\u043e",
+    "category": "appliances",
+    "amount": 12,
+    "price": "1234.00"
+  }
+},
+{
+  "model": "webapp.product",
+  "pk": 5,
+  "fields": {
+    "name": "\u0447\u0442\u043e-\u0442\u043e",
+    "description": "\u0447\u0442\u043e-\u0442\u043e",
+    "category": "other",
+    "amount": 223,
+    "price": "12444.00"
+  }
+},
+{
+  "model": "webapp.order",
   "pk": 1,
   "fields": {
-    "name": "Issue"
+    "name": "task",
+    "phone": "+996 (770) 77-04-55",
+    "address": "\u0434\u0436\u0430\u043b",
+    "created_at": "2020-09-21T11:06:24.552Z",
+    "user": 2
   }
 },
 {
-  "model": "webapp.type",
+  "model": "webapp.orderproduct",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "order": 1,
+    "qty": 1
+  }
+},
+{
+  "model": "webapp.orderproduct",
   "pk": 2,
   "fields": {
-    "name": "Bug"
+    "product": 4,
+    "order": 1,
+    "qty": 1
   }
 },
 {
-  "model": "webapp.type",
+  "model": "webapp.orderproduct",
   "pk": 3,
   "fields": {
-    "name": "Enhancement"
+    "product": 2,
+    "order": 1,
+    "qty": 2
   }
 }
 ]

@@ -1,32 +1,32 @@
 from django.urls import path, include
+
 from webapp.views import *
+
 
 app_name = 'webapp'
 
+
 urlpatterns = [
-    path('', ProjectsView.as_view(), name='index_project'),
+    path('', IndexView.as_view(), name='index'),
 
-    path('project/', include([
+    path('product/', include([
+        path('add/', ProductCreateView.as_view(), name='product_create'),
         path('<int:pk>/', include([
-            path('', ProjectView.as_view(), name='project_view'),
-            path('update/', ProjectUpdateView.as_view(), name='project_update'),
-            path('delete/', ProjectDeleteView.as_view(), name='project_delete'),
-            path('issue/add/', IssueCreateView.as_view(),
-                 name='issue_add_view'),
-            path('useradd/', UserAddView.as_view(), name='add_user_in_project'),
+            path('', ProductView.as_view(), name='product_view'),
+            path('update/', ProductUpdateView.as_view(), name='product_update'),
+            path('delete/', ProductDeleteView.as_view(), name='product_delete'),
+            path('add-to-cart/', CartAddView.as_view(), name='product_add_to_cart'),
         ])),
-
-        path('add/', ProjectCreateView.as_view(), name='project_create_view'),
-        path('mass-project/', ProjectMassActionView.as_view(), name='project_mass_action'),
     ])),
 
-    path('issue/', include([
-        path('', IssuesView.as_view(), name='index_issue'),
+    path('cart/', include([
+        path('', CartView.as_view(), name='cart_view'),
         path('<int:pk>/', include([
-            path('', IssueView.as_view(), name='issue_view'),
-            path('update/', IssueUpdateView.as_view(), name='issue_update_view'),
-            path('delete/', IssueDeleteView.as_view(), name='issue_delete_view'),
-        ]))
-    ]))
+            path('delete/', CartDeleteView.as_view(), name='cart_delete'),
+            path('delete-one/', CartDeleteOneView.as_view(), name='cart_delete_one'),
+        ])),
+    ])),
 
+    path('order/create/', OrderCreateView.as_view(), name='order_create'),
+    path('orders/watch/', WatchOrdersView.as_view(), name='watch_orders')
 ]

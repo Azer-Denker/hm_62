@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Товары:</h1>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+    {% for product in products %}
+        <div class="box">
+            <h3><a href="{% url "webapp:product_view" product.pk %}">{{ product.name }}</a></h3>
+            <p>Категория: {{ product.get_category_display }}</p>
+            <p>Осталось: {{ product.amount }} по {{ product.price  }} сом</p>
+            
+            {% if perms.webapp.change_product %}
+                <p><a href="{% url 'webapp:product_update' product.pk %}">Update</a></p>
+            {% endif %}
+            {% if perms.webapp.delete_product %}
+                <p><a href="{% url 'webapp:product_delete' product.pk %}">Delete</a></p>
+            {% endif %}
+            {% include 'partial/cart_add_form.html' %}
+        </div>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+{% endblock %}
