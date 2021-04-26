@@ -155,3 +155,5 @@ MEDIA_URL = '/media/'
 
 
 # SESSION_ENGINE = 'webapp.session_backend'
+
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
